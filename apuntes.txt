@@ -1,0 +1,14 @@
+Librerias para iniciar:
+
+django==3.0.8
+djangorestframework==3.11.0
+
+Comando de instalación riquirements.txt:
+
+ip install -r requirements.txt
+
+iniciar proyecto:
+django-admin startproject profiles .
+
+iniciar aplicación:
+python manage.py startapp profiles_api
