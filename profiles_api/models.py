@@ -1,12 +1,13 @@
 from django.db import models
 #*Clase básica de usuario
-from django.contrib.auth.models import AbstractUser
+from django.contrib.auth.models import AbstractBaseUser
 from django.contrib.auth.models import PermissionsMixin
 from django.contrib.auth.models import BaseUserManager
 
 class UserProfileManager(BaseUserManager):
     """Manager para desfiles de usuario"""
 
+    #*CReación de uusario común
     def create_user(self, email, name, password=None):
         """Crear nuevo user profile"""
         if not email:
@@ -21,8 +22,16 @@ class UserProfileManager(BaseUserManager):
 
         return user
 
+    def create_superuser(self, email, name, password):
+        user = self.create_user(email, name, password)
 
-class UserProfile(AbstractUser, PermissionsMixin):
+        user.is_superuser = True
+        user.is_staff = True
+        user.save(using=self._db)
+
+        return user
+
+class UserProfile(AbstractBaseUser, PermissionsMixin):
     """ Modelos base de datos para usuarios en el sistema """
     email = models.EmailField(max_length = 255, unique = True)
     name = models.CharField(max_length = 255)
