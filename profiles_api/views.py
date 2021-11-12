@@ -1,9 +1,15 @@
 
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework import status
+from rest_framework import status, filters
+from rest_framework import viewsets
+from rest_framework.authentication import TokenAuthentication
+from rest_framework.authtoken.views import ObtainAuthToken
+from rest_framework.settings import api_settings
 
-from profiles_api import serializers
+from profiles_api import serializers, models, permissions
+
+
 class HelloApiView(APIView):
     """ API View de prueba"""
 
@@ -48,3 +54,72 @@ class HelloApiView(APIView):
     def delete(self, request, pk=None):
         """Maneja eliminar un objeto"""
         return Response({'method':'DELETE'})
+
+class HelloViewSet(viewsets.ViewSet):
+    """ Test API View Set"""
+
+    serializer_class = serializers.HelloSerializer
+
+    def list(self,request):
+        """ Retornar mnesaje de hola mundo"""
+        a_viewset = [
+            'Usa acciones (list, create, retrieve, update, partial_update)',
+            'Automaticamente mapea a los URLs usando Routers',
+            'Provee más funcionalidad con menos código',
+        ]
+
+        return Response({'message':'¡Hola!', 'a_viewset': a_viewset})
+
+
+    def create(self, request):
+        """ Crear nuevo mensaje de hola mundo """
+
+        serializer = self.serializer_class(data=request.data)
+
+        if serializer.is_valid():
+            name = serializer.validated_data.get('name')
+            message = f'Hello {name}'
+            return Response({'message':message})
+        
+        else:
+            return Response(
+                serializer.errors,
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+    def retrieve(self, request, pk=None):
+        """ Obtener su objeto y su respectivo ID """
+        return Response({'http_method':'GET'})
+
+    def update(self, request, pk=None):
+        """ Actualiza un objeto """
+        return Response({'http_method':'PUT'})
+
+
+    def partial_update(self, request, pk=None):
+        """ Actualiza parcialmente el objeto """
+        return Response({'http_method':'PATCH'})
+
+
+    def destroy(self, request, pk=None):
+        """ Elimina un objeto """
+        return Response({'http_method':'DELETE'})
+
+
+class UserProfileViewSet(viewsets.ModelViewSet):
+    """ Crear y actualizar perfiles """
+    serializer_class = serializers.UserProfileSerializer
+    #*Obtener todos los usuarios que existen
+    queryset = models.UserProfile.objects.all() 
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (permissions.UpdateOwnProfile,)
+    #*Agregando filtro
+    filter_backends = (filters.SearchFilter,)
+    search_fields = ('name', 'email',)
+
+
+
+
+class UserLogininApiView(ObtainAuthToken):
+    """ Crea tokens de autenticación de usuario"""
+    renderer_classes = api_settings.DEFAULT_RENDERER_CLASSES

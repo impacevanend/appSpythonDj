@@ -12,3 +12,83 @@ django-admin startproject profiles .
 
 iniciar aplicación:
 python manage.py startapp profiles_api
+
+Qué son los ViewSets
+
+Usa funciones de operaciones de modelo de
+
+def list() enlista objetos
+    create() crea
+    retrieve() obtiene objeto especifíco
+    update() actualiza
+    partial_update() actualiza parcialmente
+    destroy() elimina
+
+¿Qué son los viewsets?
+
+- Se encarga de lógica común
+- bueno para operaciones estandar de db
+- forma más rápida de hacer interfaz con bd
+
+¿Cuándo usamos viewsets?
+
+- CRUD simple
+- API simple
+- poca perzonalización de lógica
+- trabaja con estructura de datos normales
+
+
+
+Nota un ViewSets, necesita un router.
+
+
+API para perfil de usuario
+
+¿Qué debemos hacer?
+
+1. Crear nuevo perfil
+manaeja resitro nuevos usuarios
+valida datos de perfil
+
+2. Enlistar perfiles existentes
+Buscar perfiles
+email y nombre
+
+3. Ver perfil especifico
+ID de perfil
+
+4. Actualizar perfil de usuarios logeados
+cambiar nombre, email y clave
+
+5. Borrar perfil
+
+¿Cómo lograrlo? Por medio de URLs del Api
+/api/profile/   -> elinstar perfiles en HTTP GET
+                -> crear en http post
+
+/api/profile/ -> ver perfil especifico HTTP GET
+<profile_id>/ -> actualiza objeto PUT 
+              -> borraR objeto DELETE
+
+
+API Fee del perfil de usuario
+
+¿Qué necesitamos hacer?
+
+1. Crear nuevos items para el feed
+2. Actualizar items
+3. Borrar items
+4. Ver todos los usuarios status updates
+
+API URLs
+
+/api/feed/ -> listar todos los items
+           -> Get
+           -> POST
+
+ /api/feed/<item_id>/-> maneja items especificos      -
+                     -> actualizar item
+                     -> Get
+                     -> PUT
+                     -> DELETE
+                    
