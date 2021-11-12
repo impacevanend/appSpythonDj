@@ -7,6 +7,7 @@ router = DefaultRouter()
 router.register('hello_viewset', views.HelloViewSet, basename='hello_viewset')
 #Cuando se está utilizando un queryset, no es neceario registrar un basename
 router.register('profile', views.UserProfileViewSet)
+router.register('feed', views.UserProfileFeedViewSet)
 
 
 urlpatterns = [

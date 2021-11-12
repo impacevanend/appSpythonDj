@@ -57,4 +57,16 @@ class UserProfile(AbstractBaseUser, PermissionsMixin):
         """Retornar cadena representando nuestro usuario"""
         return self.email
 
+class ProfileFeedItem(models.Model):
+    """ Perfil de status update """
+    user_profile = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete = models.CASCADE
+    )
 
+    status_text = models.CharField(max_length = 255)
+    created_on = models.DateTimeField(auto_now_add = True) 
+
+    def __str__(self):
+        """Retornar cadena representando nuestro status update"""
+        return self.status_text
